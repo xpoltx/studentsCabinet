@@ -13,9 +13,9 @@ const StudentInfoSchema = new mongoose.Schema({
 
 export const StudentInfoModel = mongoose.model('StudentInfo', StudentInfoSchema);
 
-export const getStudentsInfo = (userId:string) => StudentInfoModel.findOne({userId});
+export const getStudentsInfo = (userId:mongoose.Types.ObjectId) => StudentInfoModel.findOne({userId});
 export const getGroupList = (group: string) => StudentInfoModel.find({group}).select(['userId', 'group']);
 
 export const createStudentInfo = (values: CreateStudentInfoDTO) => new StudentInfoModel(values).save().then((studentInfo)=> studentInfo.toObject())
-export const updateStudentInfo = (userId: string, values: UpdateStudentDTO) => StudentInfoModel.findOneAndUpdate({userId}, values);
-export const deleteStudentInfo = (_id: string) => StudentInfoModel.findByIdAndDelete(_id);
+export const updateStudentInfo = (userId: mongoose.Types.ObjectId, values: UpdateStudentDTO) => StudentInfoModel.findOneAndUpdate({userId}, values);
+export const deleteStudentInfo = (_id: mongoose.Types.ObjectId) => StudentInfoModel.findByIdAndDelete(_id);

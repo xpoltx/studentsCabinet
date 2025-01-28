@@ -20,4 +20,4 @@ export const getUserBySessionToken = (sessionToken: string)=> UserModel.findOne(
 
 export const createUser = (values: CreateUserDTO) => new UserModel(values).save().then((user)=>user.toObject()).catch(err => console.log(err));
 export const updateUser = (email: string, values: UpdateUserDTO) => UserModel.findOneAndUpdate({email}, values, {new:true});
-export const deleteUser = (id: string) => UserModel.findByIdAndDelete({_id: id});
+export const deleteUser = (id: mongoose.Types.ObjectId) => UserModel.findByIdAndDelete({_id: id});

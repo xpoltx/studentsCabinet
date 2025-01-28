@@ -11,10 +11,10 @@ const DisciplineSchema = new mongoose.Schema({
 
 export const DisciplineModel = mongoose.model('Discipline', DisciplineSchema);
 
-export const getDisciplineByID = (_id: string) => DisciplineModel.findById(_id);
+export const getDisciplineByID = (_id: mongoose.Types.ObjectId) => DisciplineModel.findById(_id);
 export const getDisciplineByName = (name: string) => DisciplineModel.findOne({name});
-export const getProfessorsDisciplines = (professorId: string) => DisciplineModel.find({professorId});
+export const getProfessorsDisciplines = (professorId: mongoose.Types.ObjectId) => DisciplineModel.find({professorId});
 
 export const createDiscipline = (values: CreateDisciplineDTO) => new DisciplineModel(values).save().then(discipline => discipline.toObject()).catch(err => console.log(err));
-export const updateDiscipline = (_id: string, values: UpdateDisciplineDTO) => DisciplineModel.findByIdAndUpdate(_id, values);
-export const deleteDiscipline = (_id: string) => DisciplineModel.findByIdAndDelete(_id);
+export const updateDiscipline = (_id: mongoose.Types.ObjectId, values: UpdateDisciplineDTO) => DisciplineModel.findByIdAndUpdate(_id, values);
+export const deleteDiscipline = (_id: mongoose.Types.ObjectId) => DisciplineModel.findByIdAndDelete(_id);
