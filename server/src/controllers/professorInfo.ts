@@ -3,12 +3,14 @@ import { createInfo, deleteInfo, getInfo, getInfoByGroup, updateInfo } from "../
 import { UserModel } from "../db/user";
 import { CreateProfessorInfoDTO } from "../dtos/professorInfo/CreateProfessorInfo.dto";
 import { UpdateProfessorInfoDTO } from "../dtos/professorInfo/UpdateProfessorInfo.dto";
+import mongoose from "mongoose";
 
 
 export const getProfessorInfo = async(req: express.Request, res: express.Response)=>{
     try {
         const {userId} = req.params;
-        const info = await getInfo(userId);
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const info = await getInfo(objectId);
         return res.status(200).json({info});
     } catch (error) {
         return res.status(500).json({error});
@@ -42,12 +44,13 @@ export const createProfessorInfo = async(req: express.Request, res: express.Resp
 export const updateProfessorInfo = async(req: express.Request, res: express.Response) => {
         try {
             const {userId} = req.params;
+            const objectId = new mongoose.Types.ObjectId(userId);
             const values: UpdateProfessorInfoDTO = req.body;
     
             if(!values){
                 return res.status(400).json('Missing values');
             }
-            const updatedInfo = await updateInfo(values, userId);
+            const updatedInfo = await updateInfo(values, objectId);
             return res.status(200).json(updatedInfo);
         } catch (error) {
             return res.status(500).json({error});
@@ -57,7 +60,8 @@ export const updateProfessorInfo = async(req: express.Request, res: express.Resp
 export const deleteProfessorInfo = async(req: express.Request, res: express.Response)=>{
     try {
         const {userId} = req.params;
-        const deletedInfo = await deleteInfo(userId);
+        const objectId = new mongoose.Types.ObjectId(userId);
+        const deletedInfo = await deleteInfo(objectId);
         return res.status(200).json(deletedInfo);
     } catch (error) {
         return res.status(500).json({error});        

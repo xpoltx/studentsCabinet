@@ -1,6 +1,7 @@
 import express from "express";
 import { deleteUser, getUsers, getUsersByRole, updateUser } from "../db/user";
 import { UpdateUserDTO } from "../dtos/user/UpdateUser.dto";
+import mongoose from "mongoose";
 
 export const getAllUsers = async( req: express.Request, res: express.Response) =>{
     try {
@@ -39,7 +40,8 @@ export const updUser = async( req: express.Request, res: express.Response)=>{
 export const delUser = async( req: express.Request, res: express.Response) =>{
     try {
         const {id} = req.params;
-        const deletedUser = await deleteUser(id);
+        const objectId = new mongoose.Types.ObjectId(id);
+        const deletedUser = await deleteUser(objectId);
         return res.status(200).json(deletedUser);
     } catch (error) {
         return res.status(500).json({error});        
