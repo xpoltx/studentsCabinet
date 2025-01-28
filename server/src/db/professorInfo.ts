@@ -3,7 +3,7 @@ import { CreateProfessorInfoDTO } from "../dtos/professorInfo/CreateProfessorInf
 import { UpdateProfessorInfoDTO } from "../dtos/professorInfo/UpdateProfessorInfo.dto";
 
 const ProfessorInfoSchema = new mongoose.Schema({
-    userId: {type: String, require: true},
+    userId: {type: mongoose.Types.ObjectId, ref:'User', required: true},
     curator: {type: Boolean, required: false},
     curatedGroup: {type: String, required: false},
 });

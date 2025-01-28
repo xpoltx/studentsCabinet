@@ -4,7 +4,7 @@ import { UpdateDisciplineDTO } from '../dtos/discipline/UpdateDiscipline.dto';
 
 const DisciplineSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    professorId: {type: String, required: true},
+    professorId: {type: mongoose.Types.ObjectId, ref:'User', required: true},
     desc: {type: String, require: false},
     course: {type: Number, required: true}
 });

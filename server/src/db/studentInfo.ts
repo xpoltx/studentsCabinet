@@ -3,7 +3,7 @@ import { CreateStudentInfoDTO } from "../dtos/studentInfo/CreateStudentInfo.dto"
 import { UpdateStudentDTO } from "../dtos/studentInfo/UpdateStudentInfo.dto";
 
 const StudentInfoSchema = new mongoose.Schema({
-    userId: {type: String, require: true},
+    userId: {type: mongoose.Types.ObjectId, ref:'User', required: true},
     course: {type: Number, required: true},
     group: {type: String, required: true},
     faculty: {type: String, required: true},

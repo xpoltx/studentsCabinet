@@ -4,7 +4,7 @@ import { UpdateUserDTO } from "../dtos/user/UpdateUser.dto";
 
 const UserSchema = new mongoose.Schema({
     fullname: {type: String, required: true},
-    email: {type: String, required: true},
+    email: {type: String, required: true, unique: true},
     password: {type: String, select: false},
     sessionToken: {type: String, select: false},
     role:{ type: String, required: false, enum:["professor", "student"], default: 'student'}
