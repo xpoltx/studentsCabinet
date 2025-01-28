@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
+
 export interface CreateProfessorInfoDTO {
-    userId: string,
+    userId: Types.ObjectId,
     curator: boolean,
     curatedGroup: string
 }

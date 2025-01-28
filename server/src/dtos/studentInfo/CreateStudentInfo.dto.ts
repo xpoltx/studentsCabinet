@@ -1,5 +1,7 @@
+import { Types } from "mongoose";
+
 export interface CreateStudentInfoDTO{
-    userId: string,
+    userId: Types.ObjectId,
     course: number,
     group: string,
     faculty: string,
