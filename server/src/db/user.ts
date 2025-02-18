@@ -7,7 +7,8 @@ const UserSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, select: false},
     sessionToken: {type: String, select: false},
-    role:{ type: String, required: false, enum:["professor", "student"], default: 'student'}
+    role:{ type: String, required: false, enum:["professor", "student"], default: "student"},
+    profilePic:{type: String, default: ""}
 });
 
 export const UserModel = mongoose.model('User', UserSchema);

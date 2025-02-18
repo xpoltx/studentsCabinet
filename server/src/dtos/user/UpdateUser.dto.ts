@@ -3,4 +3,5 @@ export interface UpdateUserDTO{
     email?: string;
     password?: string;
     role?: string;
+    profilePic?: string;
 }

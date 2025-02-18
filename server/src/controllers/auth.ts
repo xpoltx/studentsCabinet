@@ -17,6 +17,7 @@ export const registration = async(req: express.Request, res: express.Response) =
         }
         const encryptedPassword = (await bcrypt.hash(values.password, 10)).toString(); 
         values.password = encryptedPassword;
+        values.profilePic = `https://avatar.iran.liara.run/public/boy?username=${values.fullname}`;
         const regUser = await createUser(values);
         return res.status(200).json(regUser);
     } catch (error) {
