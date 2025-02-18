@@ -1,11 +1,12 @@
 import {Router} from "express";
 import { createInfo, deleteInfo, getGroup, getStInfo, updateInfo } from "../controllers/studentInfo";
+import { isAuthenticated, isProfessor } from "../middleware/userStatus";
 
 
 export default (router: Router)=>{
-    router.get('/student/:studentId', getStInfo);
-    router.get('/group/:groupName', getGroup);
-    router.post('/student/create', createInfo);
-    router.patch('/student/update/:userId', updateInfo);
-    router.delete('/student/delete/:userId', deleteInfo);
+    router.get('/student/:studentId',isAuthenticated, getStInfo);
+    router.get('/group/:groupName',isAuthenticated, getGroup);
+    router.post('/student/create',isAuthenticated, isProfessor, createInfo);
+    router.patch('/student/update/:userId',isAuthenticated, isProfessor, updateInfo);
+    router.delete('/student/delete/:userId',isAuthenticated, isProfessor, deleteInfo);
 }
