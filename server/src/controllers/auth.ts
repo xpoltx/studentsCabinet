@@ -1,10 +1,14 @@
 import express from "express";
 import { CreateUserDTO } from "../dtos/user/CreateUser.dto";
-import { createUser, getUserByEmail } from "../db/user";
+import { createUser, getUserByEmail, getUserBySessionToken, getUserByUUID, UserModel } from "../db/user";
 import bcrypt from 'bcrypt'
 import { LoginUserDTO } from "../dtos/user/LoginUser.dto";
 import { AES } from "crypto-ts";
+import genUUID from "../utils/genUUID";
 import dotenv from "dotenv"
+import { get } from "lodash";
+import generateQRcode from "../utils/genQRcode";
+import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config()
 
@@ -40,6 +44,7 @@ export const login = async(req: express.Request, res: express.Response)=>{
             return res.status(400).json({error: "Wrong password"});
         }
         existingUser.sessionToken = AES.encrypt(existingUser.fullname, process.env.SECRET_KEY!).toString();
+        existingUser.uuid = genUUID();
         await existingUser.save();
         res.cookie('User-auth', existingUser.sessionToken, {domain: 'localhost', path: '/'});
         return res.status(200).json(existingUser);
@@ -48,3 +53,37 @@ export const login = async(req: express.Request, res: express.Response)=>{
     }
 }
 
+export const qrCode = async(req: express.Request, res:express.Response)=>{
+    try {
+        const userEmail = get(req, 'identity.email') as string | undefined;
+        const existingUser = await getUserByEmail(userEmail!);
+        if(!existingUser){
+            return res.status(400).json({error: "User doesnt exist"});
+        }
+        const uuid= genUUID();
+        existingUser.uuid = uuid;
+        await existingUser.save();
+        const qr = await generateQRcode(existingUser.uuid);
+        return res.status(200).send(`<img src="${qr}" alt="qr code" />`);
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}
+
+export const loginUUID = async(req: express.Request, res:express.Response)=>{
+    try {
+        const {uuid} = req.body;
+        if(!uuid){
+            return res.status(400).json({ error: "Invalid UUID" });
+        }
+        const existingUser = await getUserByUUID(uuid);
+        if(!existingUser){
+            return res.status(400).json({error: "User doesnt exist"});
+        }
+        existingUser.uuid = undefined;
+        await existingUser.save();
+        return res.status(200).json( {message: "Auth successful", existingUser});
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}

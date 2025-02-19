@@ -4,4 +4,5 @@ export interface CreateUserDTO{
     password: string;
     role?: string;
     profilePic?: string;
+    uuid?: string;
 }
