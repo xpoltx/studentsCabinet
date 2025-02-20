@@ -1,6 +1,6 @@
 import express from "express";
 import { CreateUserDTO } from "../dtos/user/CreateUser.dto";
-import { createUser, getUserByEmail, getUserBySessionToken, getUserByUUID, UserModel } from "../db/user";
+import { createUser, getUserByConfirmToken, getUserByEmail, getUserBySessionToken, getUserByUUID, UserModel } from "../db/user";
 import bcrypt from 'bcrypt'
 import { LoginUserDTO } from "../dtos/user/LoginUser.dto";
 import { AES } from "crypto-ts";
@@ -8,7 +8,7 @@ import genUUID from "../utils/genUUID";
 import dotenv from "dotenv"
 import { get } from "lodash";
 import generateQRcode from "../utils/genQRcode";
-import { v4 as uuidv4 } from 'uuid';
+import { sendConfirmMail } from "../utils/sendConfirmMail";
 
 dotenv.config()
 
@@ -21,8 +21,10 @@ export const registration = async(req: express.Request, res: express.Response) =
         }
         const encryptedPassword = (await bcrypt.hash(values.password, 10)).toString(); 
         values.password = encryptedPassword;
+        values.confirmToken = genUUID()
         values.profilePic = `https://avatar.iran.liara.run/public/boy?username=${values.fullname}`;
         const regUser = await createUser(values);
+        await sendConfirmMail(values.email, values.confirmToken);
         return res.status(200).json(regUser);
     } catch (error) {
         return res.status(500).json({error});        
@@ -83,6 +85,23 @@ export const loginUUID = async(req: express.Request, res:express.Response)=>{
         existingUser.uuid = undefined;
         await existingUser.save();
         return res.status(200).json( {message: "Auth successful", existingUser});
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}
+
+
+export const confirmAccount = async(req: express.Request, res: express.Response) =>{
+    try {
+        const {inputToken} = req.body;
+        const existingUser = await getUserByConfirmToken(inputToken);
+        if(!existingUser){
+            return res.status(400).json({error: "Wrong confirm token. Try again!"});
+        }
+        existingUser.confirmed = true;
+        existingUser.confirmToken = undefined;
+        await existingUser.save();
+        return res.status(200).json({message: "Account confirmed successfully"});
     } catch (error) {
         return res.status(500).json({error});
     }
