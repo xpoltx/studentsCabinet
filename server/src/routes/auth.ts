@@ -1,5 +1,5 @@
 import {Router} from "express";
-import { login, loginUUID, qrCode, registration } from "../controllers/auth";
+import { confirmAccount, login, loginUUID, qrCode, registration } from "../controllers/auth";
 import { isAuthenticated } from "../middleware/userStatus";
 
 export default (router: Router)=>{
@@ -7,4 +7,5 @@ export default (router: Router)=>{
     router.post('/reg', registration);
     router.get('/qr-code', isAuthenticated, qrCode);
     router.post('/login/qr-code', loginUUID);
+    router.post('/confirm-account', confirmAccount);
 }
