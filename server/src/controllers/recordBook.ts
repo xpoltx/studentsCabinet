@@ -52,7 +52,7 @@ export const getDebts = async(req: express.Request, res: express.Response)=>{
 export const crRecordBook = async(req:express.Request, res: express.Response) =>{
     try {
         const values: CreateRecordBookDTO = req.body;
-        const recordBook = createRecordBook(values);
+        const recordBook = await createRecordBook(values);
         return res.status(200).json(recordBook);
     } catch (error) {
         return res.status(500).json({error});        
