@@ -40,8 +40,8 @@ export const getDiscpRecBook = async(req: express.Request, res: express.Response
 
 export const getDebts = async(req: express.Request, res: express.Response)=>{
     try {
-        const {studnetId} = req.params;
-        const objectId = new mongoose.Types.ObjectId(studnetId);
+        const {studentId} = req.params;
+        const objectId = new mongoose.Types.ObjectId(studentId);
         const records = await getStudentsDebts(objectId);
         return res.status(200).json(records);
     } catch (error) {
