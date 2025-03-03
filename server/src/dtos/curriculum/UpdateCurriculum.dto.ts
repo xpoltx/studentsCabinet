@@ -1,6 +1,6 @@
-import { DisciplineDTO } from "./Discipline.dto";
+import { UPDDisciplineDTO } from "./UPDDiscipline.dto";
 
 export interface UpdateCurriculumDTO{
     semester?: number,
-    disciplines?: DisciplineDTO[]
+    disciplines?: UPDDisciplineDTO[]
 }

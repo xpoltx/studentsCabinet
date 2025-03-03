@@ -6,5 +6,5 @@ export interface CreateStudentInfoDTO{
     group: string,
     faculty: string,
     studyForm: string,
-    payment: string   
+    payment?: string   
 }
