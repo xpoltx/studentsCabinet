@@ -18,7 +18,7 @@ export const getCurriculum = async(req: express.Request, res: express.Response)=
 export const crCurriculum = async(req:express.Request, res: express.Response) =>{
     try {
         const values: CreateCurriculumDTO = req.body;
-        const curriculum = createCurriculum(values);
+        const curriculum = await createCurriculum(values);
         return res.status(200).json(curriculum);
     } catch (error) {
         return res.status(500).json({error});        
