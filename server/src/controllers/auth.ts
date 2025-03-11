@@ -22,7 +22,7 @@ export const registration = async(req: express.Request, res: express.Response) =
         const encryptedPassword = (await bcrypt.hash(values.password, 10)).toString(); 
         values.password = encryptedPassword;
         values.confirmToken = genUUID()
-        values.profilePic = `https://avatar.iran.liara.run/public/boy?username=${values.fullname}`;
+        values.profilePic = `https://avatar.iran.liara.run/public/boy?username=${values.fullname.replace(' ', '_')}`;
         const regUser = await createUser(values);
         await sendConfirmMail(values.email, values.confirmToken);
         return res.status(200).json(regUser);
