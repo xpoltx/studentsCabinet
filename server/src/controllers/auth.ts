@@ -17,15 +17,19 @@ export const registration = async(req: express.Request, res: express.Response) =
         const values: CreateUserDTO = req.body;
         const existingUser = await getUserByEmail(values.email);
         if(existingUser){
-            return res.status(200).json({err: "User with this email already exist"});
+            return res.status(201).json({err: "User with this email already exist"});
         }
         const encryptedPassword = (await bcrypt.hash(values.password, 10)).toString(); 
         values.password = encryptedPassword;
         values.confirmToken = genUUID()
         values.profilePic = `https://avatar.iran.liara.run/public/boy?username=${values.fullname.replace(' ', '_')}`;
         const regUser = await createUser(values);
+        if(!regUser){
+            return res.status(400).json({err: "Registration failed"});
+        }
         await sendConfirmMail(values.email, values.confirmToken);
-        return res.status(200).json(regUser);
+        const {password, ...newUserData} = regUser;
+        return res.status(200).json(newUserData);
     } catch (error) {
         return res.status(500).json({error});        
     }
@@ -42,14 +46,14 @@ export const login = async(req: express.Request, res: express.Response)=>{
         }
         
         if(!await bcrypt.compare(values.password, existingUser.password!)){
-            console.log(existingUser.password);
             return res.status(400).json({error: "Wrong password"});
         }
         existingUser.sessionToken = AES.encrypt(existingUser.fullname, process.env.SECRET_KEY!).toString();
         existingUser.uuid = genUUID();
         await existingUser.save();
         res.cookie('User-auth', existingUser.sessionToken, {domain: 'localhost', path: '/'});
-        return res.status(200).json(existingUser);
+        const {password, ...userData} = existingUser.toObject();
+        return res.status(200).json(userData);
     } catch (error) {
         return res.status(500).json({error});
     }
