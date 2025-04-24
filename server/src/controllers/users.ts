@@ -1,5 +1,5 @@
 import express from "express";
-import { deleteUser, getUsers, getUsersByRole, updateUser } from "../db/user";
+import { deleteUser, getUsers, getUsersByRole, updateUser, getUserById } from "../db/user";
 import { UpdateUserDTO } from "../dtos/user/UpdateUser.dto";
 import mongoose from "mongoose";
 
@@ -9,6 +9,17 @@ export const getAllUsers = async( req: express.Request, res: express.Response) =
         return res.status(200).json(users);
     } catch (error) {
         return res.status(500).json({error});
+    }
+};
+
+export const getUserBId = async( req: express.Request, res: express.Response) =>{
+    try {
+        const {id} = req.params;
+        const objectId = new mongoose.Types.ObjectId(id);
+        const users = await getUserById(objectId);
+        return res.status(200).json(users);
+    } catch (error) {
+        return res.status(500).json({error});        
     }
 };
 

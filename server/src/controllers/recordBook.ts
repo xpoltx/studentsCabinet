@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { createRecordBook, deleteRecordBook, deleteStudentsRecordBook, getDisciplinesRecordBook, getRecord, getStudentsDebts, getStudentsRecordBook, updateRecordBook } from '../db/recordBook';
+import { createRecordBook, deleteRecordBook, deleteStudentsRecordBook, getDisciplinesRecordBook, getRecord, getStudentsDebts, getStudentsRecordBook, updateRecordBook, updateStudentRecordBook } from '../db/recordBook';
 import { CreateRecordBookDTO } from '../dtos/recordBook/CreateRecordBook.dto';
 import { UpdateRecordBookDTO } from '../dtos/recordBook/UpdateRecordBook.dto';
 
@@ -77,6 +77,18 @@ export const updRecordBook = async(req: express.Request, res: express.Response) 
         const values: UpdateRecordBookDTO = req.body;
         const objectId = new mongoose.Types.ObjectId(id);
         const updRecordBook = await updateRecordBook(objectId, values);
+        return res.status(200).json(updRecordBook);
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}
+
+export const updStudentRecordBook = async(req: express.Request, res: express.Response) =>{
+    try {
+        const {id} = req.params;
+        const values: UpdateRecordBookDTO = req.body;
+        const objectId = new mongoose.Types.ObjectId(id);
+        const updRecordBook = await updateStudentRecordBook(objectId, values);
         return res.status(200).json(updRecordBook);
     } catch (error) {
         return res.status(500).json({error});

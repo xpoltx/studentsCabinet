@@ -1,6 +1,6 @@
 import mailjet from "node-mailjet";
 import dotenv from "dotenv";
-
+import { EMAIL_VERIFY_TEMPLATE } from "./emailTemplate";
 
 dotenv.config();
 
@@ -22,8 +22,7 @@ export async function sendConfirmMail(email:string, token: string): Promise <voi
                         "Name": "recep 1"
                     }],
                     "Subject": "Your confirmation code",
-                    "TextPart": "Dear recep 1, Thx for reg, here is ur confirm code",
-                    "HTMLPart": `<p> Please copy and paste this code: ${token}</p>`,
+                    "HTMLPart": EMAIL_VERIFY_TEMPLATE.replace("{{ver_token}}", token),
                 }
             ]
         });

@@ -11,7 +11,7 @@ export const getProfessorInfo = async(req: express.Request, res: express.Respons
         const {professorId} = req.params;
         const objectId = new mongoose.Types.ObjectId(professorId);
         const info = await getInfo(objectId);
-        return res.status(200).json({info});
+        return res.status(200).json(info);
     } catch (error) {
         return res.status(500).json({error});
     }

@@ -12,101 +12,131 @@ import { sendConfirmMail } from "../utils/sendConfirmMail";
 
 dotenv.config()
 
-export const registration = async(req: express.Request, res: express.Response) =>{
+export const registration = async (req: express.Request, res: express.Response) => {
     try {
         const values: CreateUserDTO = req.body;
         const existingUser = await getUserByEmail(values.email);
-        if(existingUser){
-            return res.status(201).json({err: "User with this email already exist"});
+        if (existingUser) {
+            return res.status(201).json({ err: "User with this email already exist" });
         }
-        const encryptedPassword = (await bcrypt.hash(values.password, 10)).toString(); 
+        const encryptedPassword = (await bcrypt.hash(values.password, 10)).toString();
         values.password = encryptedPassword;
         values.confirmToken = genUUID()
         values.profilePic = `https://avatar.iran.liara.run/public/boy?username=${values.fullname.replace(' ', '_')}`;
         const regUser = await createUser(values);
-        if(!regUser){
-            return res.status(400).json({err: "Registration failed"});
+        if (!regUser) {
+            return res.status(400).json({ err: "Registration failed" });
         }
         await sendConfirmMail(values.email, values.confirmToken);
-        const {password, ...newUserData} = regUser;
+        const { password, ...newUserData } = regUser;
         return res.status(200).json(newUserData);
     } catch (error) {
-        return res.status(500).json({error});        
+        return res.status(500).json({ error });
     }
-  
+
 };
 
-export const login = async(req: express.Request, res: express.Response)=>{
+export const login = async (req: express.Request, res: express.Response) => {
     try {
         const values: LoginUserDTO = req.body;
 
-        const existingUser = await getUserByEmail(values.email).select('password');
-        if(!existingUser){
-            return res.status(400).json({error: "User doesnt exist"});
+        const existingUser = await getUserByEmail(values.email).select('password role fullname profilePic');
+        if (!existingUser) {
+            return res.status(400).json({ error: "User doesnt exist" });
         }
-        
-        if(!await bcrypt.compare(values.password, existingUser.password!)){
-            return res.status(400).json({error: "Wrong password"});
+
+        if (!await bcrypt.compare(values.password, existingUser.password!)) {
+            return res.status(400).json({ error: "Wrong password" });
         }
         existingUser.sessionToken = AES.encrypt(existingUser.fullname, process.env.SECRET_KEY!).toString();
         existingUser.uuid = genUUID();
         await existingUser.save();
-        res.cookie('User-auth', existingUser.sessionToken, {domain: 'localhost', path: '/'});
-        const {password, ...userData} = existingUser.toObject();
+        res.cookie('User-auth', existingUser.sessionToken, {
+            path: '/',
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: false
+        });
+        const { password, ...userData } = existingUser.toObject();
         return res.status(200).json(userData);
     } catch (error) {
-        return res.status(500).json({error});
+        return res.status(500).json({ error });
     }
 }
 
-export const qrCode = async(req: express.Request, res:express.Response)=>{
+export const logout = async (req: express.Request, res: express.Response) => {
+    try {
+        const sessionToken = req.cookies['User-auth'];
+        if (!sessionToken) {
+            return res.status(400).json({ error: "No active session found" });
+        }
+
+        const user = await getUserBySessionToken(sessionToken);
+        if (!user) {
+            return res.status(400).json({ error: "Invalid session token" });
+        }
+
+        user.sessionToken = undefined;
+        await user.save();
+
+        res.clearCookie('User-auth', { path: '/' });
+        return res.status(200).json({ message: "Logout successful" });
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+};
+
+export const qrCode = async (req: express.Request, res: express.Response) => {
     try {
         const userEmail = get(req, 'identity.email') as string | undefined;
         const existingUser = await getUserByEmail(userEmail!);
-        if(!existingUser){
-            return res.status(400).json({error: "User doesnt exist"});
+        if (!existingUser) {
+            return res.status(400).json({ error: "User doesnt exist" });
         }
-        const uuid= genUUID();
+        const uuid = genUUID();
         existingUser.uuid = uuid;
         await existingUser.save();
         const qr = await generateQRcode(existingUser.uuid);
         return res.status(200).send(`<img src="${qr}" alt="qr code" />`);
     } catch (error) {
-        return res.status(500).json({error});
+        return res.status(500).json({ error });
     }
 }
 
-export const loginUUID = async(req: express.Request, res:express.Response)=>{
+export const loginUUID = async (req: express.Request, res: express.Response) => {
     try {
-        const {uuid} = req.body;
-        if(!uuid){
+        const { uuid } = req.body;
+        if (!uuid) {
             return res.status(400).json({ error: "Invalid UUID" });
         }
         const existingUser = await getUserByUUID(uuid);
-        if(!existingUser){
-            return res.status(400).json({error: "User doesnt exist"});
+        if (!existingUser) {
+            return res.status(400).json({ error: "User doesnt exist" });
         }
         existingUser.uuid = undefined;
         await existingUser.save();
-        return res.status(200).json( {message: "Auth successful", existingUser});
+        return res.status(200).json({ message: "Auth successful", existingUser });
     } catch (error) {
-        return res.status(500).json({error});
+        return res.status(500).json({ error });
     }
 }
 
 
-export const confirmAccount = async(req: express.Request, res: express.Response) =>{
+export const confirmAccount = async (req: express.Request, res: express.Response) => {
     try {
-        const {inputToken} = req.body;
+        const { inputToken } = req.body;
+        if (!inputToken) {
+            return res.status(400).json({ error: "Empty input token field" });
+        }
         const existingUser = await getUserByConfirmToken(inputToken);
-        if(!existingUser){
-            return res.status(400).json({error: "Wrong confirm token. Try again!"});
+        if (!existingUser) {
+            return res.status(400).json({ error: "Wrong confirm token. Try again!" });
         }
         existingUser.confirmed = true;
         existingUser.confirmToken = undefined;
         await existingUser.save();
-        return res.status(200).json({message: "Account confirmed successfully"});
+        return res.status(200).json({ message: "Account confirmed successfully" });
     } catch (error) {
-        return res.status(500).json({error});
+        return res.status(500).json({ error });
     }
 }

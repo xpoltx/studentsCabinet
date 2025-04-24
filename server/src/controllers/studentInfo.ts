@@ -22,14 +22,22 @@ export const getGroup = async(req: express.Request, res: express.Response)=>{
         const {groupName} = req.params;
         const group = await getGroupList(groupName);
 
-        const studentsId = group.map(student => student.userId);
-
-        const studentsNames = await UserModel.find({_id: {$in: studentsId}}).select('fullname');
+        const studentsData = await Promise.all(
+            group.map(async (user) => {
+                const student = await UserModel.findById(user.userId).select('fullname');
+                return {
+                    userId: user.userId,
+                    group: user.group,
+                    fullname: student?.fullname,
+                };
+            })
+        );
+        
         const groupList = {
-            group: group,
-            studentsNames: studentsNames.map(student => student.fullname),
+            group: groupName,
+            students: studentsData,
         }
-
+        
         return res.status(200).json(groupList);
 
     } catch (error) {

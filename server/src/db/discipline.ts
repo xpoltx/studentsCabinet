@@ -5,13 +5,13 @@ import { UpdateDisciplineDTO } from '../dtos/discipline/UpdateDiscipline.dto';
 const DisciplineSchema = new mongoose.Schema({
     name: {type: String, required: true},
     professorId: {type: mongoose.Types.ObjectId, ref:'User', required: true},
-    desc: {type: String, require: false},
+    desc: {type: String, require: false, default: "temp description for discipline"},
     course: {type: Number, required: true}
 });
 
 export const DisciplineModel = mongoose.model('Discipline', DisciplineSchema);
 
-export const getDisciplineByID = (_id: mongoose.Types.ObjectId) => DisciplineModel.findById(_id);
+export const getDisciplineByID = (_id: mongoose.Types.ObjectId) => DisciplineModel.findById(_id).populate('professorId', '_id fullname');
 export const getDisciplineByName = (name: string) => DisciplineModel.findOne({name});
 export const getProfessorsDisciplines = (professorId: mongoose.Types.ObjectId) => DisciplineModel.find({professorId});
 

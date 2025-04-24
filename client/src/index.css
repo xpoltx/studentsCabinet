@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+body{
+    background-image: url(./assets/bg.jpg);
+    cursor: default;
+}

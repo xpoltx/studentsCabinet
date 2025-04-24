@@ -1,8 +1,31 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { createCurriculum, deleteCurriculum, getCurriculumById, updateCurriculum } from '../db/curriculum';
+import { createCurriculum, deleteCurriculum, getCurriculumById,  updateCurriculum, getCurriculums, getCurriculumsByGroup } from '../db/curriculum';
 import { CreateCurriculumDTO } from '../dtos/curriculum/CreateCurriculum.dto';
 import { UpdateCurriculumDTO } from '../dtos/curriculum/UpdateCurriculum.dto';
+
+export const getGroupCurriculum = async(req: express.Request, res: express.Response)=>{
+    try {
+        const {group} = req.params;
+        const curriculum = await getCurriculumsByGroup(group);
+        return res.status(200).json(curriculum);
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}
+
+
+
+export const getCurrs = async(req: express.Request, res: express.Response)=>{
+    try {
+        const curriculum = await getCurriculums();
+        return res.status(200).json(curriculum);
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}
+
+
 
 export const getCurriculum = async(req: express.Request, res: express.Response)=>{
     try {
