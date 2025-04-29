@@ -178,3 +178,15 @@ export const fetchGroup = async ({groupName}) =>{
         throw new Error(error);
     }
 }
+
+export const fetchRecordBook = async ({studentId}) =>{
+    try {
+        const res = await axios.get(backendUrl + `/record-book/student/${studentId}`, {withCredentials: true});
+        if(res.status !== 200){
+            throw new Error('failed to fetch record book data');
+        }
+        return res.data;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
