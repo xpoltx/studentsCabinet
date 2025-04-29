@@ -158,3 +158,23 @@ export const fetchCurriculumData = async ({group}) => {
         throw new Error(error);
     }
 }
+
+export const fetchGroup = async ({groupName}) =>{
+    try {
+        const group = await axios.get(backendUrl + `/group/${groupName}`, {withCredentials: true});
+        const curator = await axios.get(backendUrl + `/curator/${groupName}`, {withCredentials: true});
+        if(group.status !== 200 ){
+            throw new Error('failed to fetch group data');
+        }
+        if (curator.status !== 200) {
+            throw new Error('failed to fetch curator data');
+        }
+        return {
+            groupData: group.data,
+            curatorData: curator.data
+        }
+
+    } catch (error) {
+        throw new Error(error);
+    }
+}
