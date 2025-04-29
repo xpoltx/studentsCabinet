@@ -50,7 +50,7 @@
 // export default CurriculumTable
 
 import React, { useEffect, useState } from 'react';
-import useFetch from '../hooks/useFetch'; // Переконайтеся, що шлях правильний
+import useFetch from '../hooks/useFetch'; 
 import { fetchCurriculumData } from '../hooks/api';
 import { toast } from 'react-toastify';
 
