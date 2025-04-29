@@ -15,7 +15,7 @@ export const CurriculumModel = mongoose.model('Curriculum', CurriculumSchema);
 
 export const getCurriculumById = (_id: mongoose.Types.ObjectId) => CurriculumModel.findOne(_id);
 export const getCurriculums = () => CurriculumModel.find().lean();
-export const getCurriculumsByGroup = (group: string) => CurriculumModel.find({'disciplines.groups': group}).lean();
+export const getCurriculumsByGroup = (group: string) => CurriculumModel.find({'disciplines.groups': group}).lean().populate('disciplines.disciplineId');
 // PersonModel.find({ favoriteFood : { $all : ["sushi"] }, ...})
 // export const getCurriculumByGroup = (group: string) => CurriculumModel.find({ 'disciplines.groups': {$all : [group]} }).lean();
 

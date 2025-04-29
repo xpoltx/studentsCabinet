@@ -146,3 +146,15 @@ export const fetchAccountData = async ({ role, id }) => {
         throw new Error(error);
     }
 }
+
+export const fetchCurriculumData = async ({group}) => {
+    try {
+        const curriculumRes = await axios(backendUrl + `/${group}/curriculum`, {withCredentials: true});
+        if(curriculumRes.status !== 200){
+            throw new Error('failed to fetch curriculum data');
+        }
+        return curriculumRes.data;
+    } catch (error) {
+        throw new Error(error);
+    }
+}
