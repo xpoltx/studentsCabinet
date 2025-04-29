@@ -22,13 +22,8 @@ const UpdateDisciplineTableInfo = ({ id }) => {
     useEffect(() => {
         if (initData && updatedData) {
             setChanged(JSON.stringify(initData) !== JSON.stringify(updatedData));
-        } else {
-            setChanged(false);
-        }
+        } 
     }, [initData, updatedData]);
-
-
-
 
     if (!data) {
         return <div className='flex justify-center items-center h-screen'>Завантаження інформації про дисципліну...</div>;

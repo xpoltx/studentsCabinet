@@ -35,7 +35,7 @@ const StudsDiscipTable = ({ id }) => {
               </td>
               <td className="border border-gray-300 px-4 py-2">
 
-                <Link to={`/record-book/upd/${student.studentId._id}`} className='block w-full h-full'>{ student.grade }</Link>
+                <Link to={`/record-book/upd/discipline/${id}/student/${student.studentId._id}`} className='block w-full h-full'>{ student.grade }</Link>
 
               </td>
             </tr>

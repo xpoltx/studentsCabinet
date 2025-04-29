@@ -2,49 +2,22 @@ import React, { useContext, useEffect, useState } from 'react'
 import UserHeader from '../components/UserHeader'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
-import { AppContent } from '../context/AppContext';
-import useGetAccountData from '../hooks/useGetAccountData';
 import AccountInfoTable from '../components/AccountInfoTable';
-
 import useFetch from '../hooks/useFetch';
-import { fetchUserFullname } from '../hooks/api';
-import useGetUserFullname from '../hooks/useGetUserFullname';
+import { fetchAccountData, fetchUserFullname } from '../hooks/api';
+
 
 
 const UserPage = () => {
-
-  const backendUrl = useContext(AppContent);
   const { role, userid } = useParams();
-  const { getAccountData, loading, error } = useGetAccountData({ role, id: userid });
-  const { getFullname } = useGetUserFullname({ id: userid });
-  const [fullname, setFullname] = useState('');
-  const [data, setData] = useState({});
-  const loggedUserRole = useContext(AppContent).userRole;
+  const {data, loading, error} = useFetch(() => fetchAccountData({role: role, id: userid}));
+  const {data: fullname, loading: nameLoading, error: nameError} = useFetch(() => fetchUserFullname({id: userid}));
 
-  // const {data: fullname, loading: fullnameLoading, error: fullnameError} = useFetch(() => fetchUserFullname({
-  //   backendUrl: backendUrl,
-  //   id: userid
-  // }
-  // ))
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const accountData = await getAccountData();
-        setData(accountData);
-        const userFullname = await getFullname();
-        setFullname(userFullname);
-      } catch (error) {
-        toast.error('Error fetching account data: ' + error.message);
-      }
-    };
-    fetchData();
-  }, []);
-
-  if (loading) {
+  if (loading || nameLoading) {
     return <div className='flex justify-center items-center h-screen'>Loading...</div>
   }
-  if (error) {
+  if (error || nameError) {
+    toast.error(error || nameError);
     return <div className='flex justify-center items-center h-screen'>{error}</div>
   }
 

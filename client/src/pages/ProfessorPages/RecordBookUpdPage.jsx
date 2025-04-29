@@ -6,12 +6,11 @@ import { fetchStudentRecord } from '../../hooks/api';
 import useFetch from '../../hooks/useFetch';
 
 const RecordBookUpdPage = () => {
-    const { id } = useParams();
-    const { data, loading, error } = useFetch(() => fetchStudentRecord(id));
+    const { disciplineId, studentId } = useParams();
     return (
     <div>
         <UserHeader/>
-        <UpdateRecordTable />
+        <UpdateRecordTable disciplineId={disciplineId} studentId={studentId} />
     </div>
   )
 }
