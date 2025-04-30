@@ -7,7 +7,16 @@ const CurriculumSchema = new mongoose.Schema({
     disciplines:[{
         disciplineId: {type: mongoose.Types.ObjectId, ref: 'Discipline', required: true},
         groups:[{type: String, required: true}],    
-        credits: {type: Number, required: true}
+        credits: {type: Number, required: true},
+        schedule: {
+            day: {
+                type: String,
+                enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                required: true
+            },
+            startTime: {type: String, required: true},
+            endTime: {type: String, required: true},
+        }
     }]
 });
 
