@@ -1,5 +1,5 @@
 import express from "express";
-import { createDiscipline, deleteDiscipline, getDisciplineByID, getDisciplineByName, getProfessorsDisciplines, updateDiscipline } from "../db/discipline";
+import { createDiscipline, deleteDiscipline, getDisciplineByID, getDisciplineByName, getDisciplines, getProfessorsDisciplines, updateDiscipline } from "../db/discipline";
 import mongoose from "mongoose";
 import { CreateDisciplineDTO } from "../dtos/discipline/CreateDiscipline.dto";
 import { UpdateDisciplineDTO } from "../dtos/discipline/UpdateDiscipline.dto";
@@ -10,6 +10,15 @@ export const getDiscipline = async(req: express.Request, res: express.Response)=
         const objectId = new mongoose.Types.ObjectId(id);
         const discipline = await getDisciplineByID(objectId);
         return res.status(200).json(discipline);
+    } catch (error) {
+        return res.status(500).json({error});
+    }
+}
+
+export const getAllDisciplines = async(req: express.Request, res: express.Response)=>{
+    try {
+        const disciplines = await getDisciplines();
+        return res.status(200).json(disciplines);
     } catch (error) {
         return res.status(500).json({error});
     }

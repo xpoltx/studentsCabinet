@@ -11,6 +11,7 @@ const DisciplineSchema = new mongoose.Schema({
 
 export const DisciplineModel = mongoose.model('Discipline', DisciplineSchema);
 
+export const getDisciplines = () => DisciplineModel.find().lean()
 export const getDisciplineByID = (_id: mongoose.Types.ObjectId) => DisciplineModel.findById(_id).populate('professorId', '_id fullname');
 export const getDisciplineByName = (name: string) => DisciplineModel.findOne({name});
 export const getProfessorsDisciplines = (professorId: mongoose.Types.ObjectId) => DisciplineModel.find({professorId});
