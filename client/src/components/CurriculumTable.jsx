@@ -53,6 +53,8 @@ import React, { useEffect, useState } from 'react';
 import useFetch from '../hooks/useFetch'; 
 import { fetchCurriculumData } from '../hooks/api';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
+
 
 const CurriculumTable = ({ group }) => {
     const { data, loading, error } = useFetch(() => fetchCurriculumData({ group }));
@@ -82,7 +84,7 @@ const CurriculumTable = ({ group }) => {
                         <tbody>
                             {semester.disciplines.map((discipline) => (
                                 <tr key={discipline._id} className="hover:bg-gray-50">
-                                    <td className="border border-gray-300 px-4 py-2">{discipline.disciplineId.name}</td>
+                                    <td className="border border-gray-300"><Link to={`/discipline/${discipline.disciplineId._id}`} className='block w-full h-full px-4 py-2'>{discipline.disciplineId.name}</Link></td>
                                     <td className="border border-gray-300 px-4 py-2">{discipline.credits}</td>
                                     <td className="border border-gray-300 px-4 py-2">
                                         {discipline.groups.join(', ')}
