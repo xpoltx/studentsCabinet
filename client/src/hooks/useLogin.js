@@ -33,8 +33,26 @@ const useLogin = () => {
             setLoading(false);
         }
     }
+
+    const logout = async()=>{
+        setLoading(true);
+        setError(null);
+        try {
+            const res = await axios.post(backendUrl + '/logout', {}, {withCredentials: true});
+            if(res.status !== 200){
+                setError('Logout failed');
+            }
+            localStorage.removeItem('User');
+            navigate('/');
+        } catch (error) {
+            setError(error);
+
+        }finally{
+            loading(false);
+        }
+    }
     
-    return {loading, login, error}
+    return {loading, error, login, logout}
 }
 
 

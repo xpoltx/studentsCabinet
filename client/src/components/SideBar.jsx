@@ -1,30 +1,15 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {  useState } from 'react';
 import NavLinks from './NavLinks';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { AppContent } from '../context/AppContext';
+import useLogin from '../hooks/useLogin';
 
 const SideBar = ({ userRole }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const navigate = useNavigate();
-    const { backendUrl } = useContext(AppContent);
+    const {loading, logout} = useLogin();
 
-
-    const handleLogout = async () => {
-        try {
-            const response = await axios.post(backendUrl + '/logout', {}, { withCredentials: true });
-            if (response.status === 200) {
-                localStorage.removeItem('User');
-                toast.success('Logout successful');
-                navigate('/');
-            } else {
-                console.error("Logout failed");
-            }
-        } catch (error) {
-            console.error("Error during logout:", error);
-        }
-    };
+    const handleLogout = async ( e) =>{
+        e.preventDefault();
+        await logout();
+    }
 
     return (
         <>

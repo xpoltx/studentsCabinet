@@ -14,12 +14,12 @@ import Group from './pages/Group'
 import UserPage from './pages/UserInfoPage'
 import CurriculumPage from './pages/CurriculumPage'
 import DisciplinePage from './pages/DisciplinePage'
-import Schedule from './pages/Schedule'
 import ProfessorsDisciplinesPage from './pages/ProfessorPages/ProfessorsDisciplinesPage'
 import UpdateDisciplinePage from './pages/ProfessorPages/UpdateDisciplinePage'
 import GetRecordsPage from './pages/ProfessorPages/GetRecordsPage'
 import StudentsDisciplinePage from './pages/ProfessorPages/StudentsDisciplinePage'
 import RecordBookUpdPage from './pages/ProfessorPages/RecordBookUpdPage'
+import SchedulePage from './pages/StudentPages/SchedulePage'
 
 const App = () => {
 
@@ -40,7 +40,7 @@ const App = () => {
         <Route path='/info/:role/:userid' element={<UserPage/>}></Route>
         <Route path='/curriculum' element={<CurriculumPage/>}></Route>
         <Route path='/discipline/:id' element={<DisciplinePage/>}></Route>
-        <Route path='/schedule' element={<Schedule/>}></Route>
+        <Route path='/schedule' element={<SchedulePage/>}></Route>
         <Route path='/disciplines' element={<ProfessorsDisciplinesPage/>}></Route>
         <Route path='/discipline/upd/:id' element={<UpdateDisciplinePage/>}></Route>
         <Route path='/records' element={<GetRecordsPage/>}></Route>
