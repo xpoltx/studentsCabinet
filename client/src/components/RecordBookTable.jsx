@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
-import { fetchRecordBook } from '../hooks/api';
+import { fetchRecordBook } from '../services/recordBookService';
 
 const RecordBookTable = ({studentId}) => {
 

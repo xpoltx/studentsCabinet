@@ -3,7 +3,7 @@ import UserHeader from '../components/UserHeader'
 import AccountInfoTable from '../components/AccountInfoTable'
 import { toast } from 'react-toastify'
 import useFetch from '../hooks/useFetch'
-import { fetchAccountData } from '../hooks/api'
+import { fetchAccountData } from '../services/userDataService' 
 
 
 

@@ -5,6 +5,7 @@ import { AppContent } from '../context/AppContext';
 
 const UserHeader = () => {
     const { userRole } = useContext(AppContent);
+
     return (
         <div>
             <div className='flex px-4 py-3 justify-between items-center'>

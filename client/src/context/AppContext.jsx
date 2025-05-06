@@ -1,12 +1,12 @@
 import axios from "axios";
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 export const AppContent = createContext();
 
 export const AppContextProvider = (props) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
-    const user = JSON.parse(localStorage.getItem('User'));
+    const [user, setUser] = useState(null);
     const userRole = user?.role;
     const userId = user?._id;
 
@@ -14,6 +14,7 @@ export const AppContextProvider = (props) => {
         backendUrl,
         userRole,
         userId,
+        setUser
     }
 
     return (

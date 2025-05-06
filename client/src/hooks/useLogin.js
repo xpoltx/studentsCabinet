@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const useLogin = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const {backendUrl} = useContext(AppContent); 
+    const {backendUrl, setUser} = useContext(AppContent); 
     const navigate = useNavigate();
 
     const login = async(email, password) =>{
@@ -21,6 +21,7 @@ const useLogin = () => {
          
             if(response.status === 200){
                 localStorage.setItem("User", JSON.stringify(response.data));
+                setUser(response.data);
                 navigate('/user-home');
             }else{
                 setError(response.data.error || 'Login failed');
@@ -43,6 +44,7 @@ const useLogin = () => {
                 setError('Logout failed');
             }
             localStorage.removeItem('User');
+            setUser(null);
             navigate('/');
         } catch (error) {
             setError(error);

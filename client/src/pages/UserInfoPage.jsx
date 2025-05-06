@@ -4,7 +4,8 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import AccountInfoTable from '../components/AccountInfoTable';
 import useFetch from '../hooks/useFetch';
-import { fetchAccountData, fetchUserFullname } from '../hooks/api';
+import { fetchAccountData, fetchUserFullname } from '../services/userDataService'; 
+
 
 
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from '../../hooks/useFetch'
-import { fetchStudentRecord, updateGrade } from '../../hooks/api'
+import { fetchStudentRecord, updateGrade } from '../../services/recordBookService' 
+
 import useMutation from '../../hooks/useMutation'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'

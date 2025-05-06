@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
-import { fetchGroup } from '../hooks/api';
+import { fetchGroup } from '../services/studentsService'; 
 
 
 const GroupTable = ({ groupName }) => {

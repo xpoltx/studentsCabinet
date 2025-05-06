@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import UserHeader from '../../components/UserHeader'
 import { useParams } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch';
-import { fetchDisciplineInfo, updateDiscipline } from '../../hooks/api';
+import { fetchDisciplineInfo } from '../../services/disciplinesService';
 import UpdateDisciplineTableInfo from '../../components/ProfComp/UpdateDisciplineTableInfo';
-import useMutation from '../../hooks/useMutation';
 
 const UpdateDisciplinePage = () => {
     const { id } = useParams();

@@ -1,7 +1,8 @@
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch';
-import { fetchStudentsByDiscipline } from '../../hooks/api';
+import { fetchStudentsByDiscipline } from '../../services/studentsService'; 
+
 
 const StudsDiscipTable = ({ id }) => {
   const { data, loading, error } = useFetch(() => fetchStudentsByDiscipline({ id }));

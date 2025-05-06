@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import useFetch from '../../hooks/useFetch';
-import { fetchProfessorDisciplines } from '../../hooks/api';
+import { fetchProfessorDisciplines } from '../../services/disciplinesService';
 import ProfDisciplineCard from './ProfDiscipCard';
 
 const ProfDiscipTable = ({ id, act }) => {

@@ -49,9 +49,9 @@
 
 // export default CurriculumTable
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useFetch from '../hooks/useFetch'; 
-import { fetchCurriculumData } from '../hooks/api';
+import { fetchCurriculumData } from '../services/curriculumService'; 
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 

@@ -2,7 +2,7 @@ import React from 'react'
 import UserHeader from '../components/UserHeader'
 import { useParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
-import { fetchDisciplineInfo } from '../hooks/api'
+import { fetchDisciplineInfo } from '../services/disciplinesService'
 import DisciplineTableInfo from '../components/DisciplineTableInfo'
 
 
