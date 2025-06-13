@@ -3,7 +3,7 @@ import { CreateDisciplineDTO } from '../dtos/discipline/CreateDiscipline.dto';
 import { UpdateDisciplineDTO } from '../dtos/discipline/UpdateDiscipline.dto';
 
 const DisciplineSchema = new mongoose.Schema({
-    name: {type: String, required: true},
+    name: {type: String, required: true, unique: true},
     professorId: {type: mongoose.Types.ObjectId, ref:'User', required: true},
     desc: {type: String, require: false, default: "temp description for discipline"},
     course: {type: Number, required: true}
@@ -17,5 +17,6 @@ export const getDisciplineByName = (name: string) => DisciplineModel.findOne({na
 export const getProfessorsDisciplines = (professorId: mongoose.Types.ObjectId) => DisciplineModel.find({professorId});
 
 export const createDiscipline = (values: CreateDisciplineDTO) => new DisciplineModel(values).save().then(discipline => discipline.toObject()).catch(err => console.log(err));
+export const createManyDisciplines = (values: CreateDisciplineDTO[]) => DisciplineModel.insertMany(values).catch(err=>console.log(err));
 export const updateDiscipline = (_id: mongoose.Types.ObjectId, values: UpdateDisciplineDTO) => DisciplineModel.findByIdAndUpdate(_id, values);
 export const deleteDiscipline = (_id: mongoose.Types.ObjectId) => DisciplineModel.findByIdAndDelete(_id);

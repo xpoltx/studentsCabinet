@@ -1,9 +1,10 @@
 import express from "express"
-import { createInfo, deleteInfo, getInfo, getInfoByGroup, updateInfo } from "../db/professorInfo";
-import { getUserById, UserModel } from "../db/user";
+import { createInfo, createManyProfessorInfo, deleteInfo, getInfo, getInfoByGroup, updateInfo } from "../db/professorInfo";
+import { getUserById, getUsersByRole, UserModel } from "../db/user";
 import { CreateProfessorInfoDTO } from "../dtos/professorInfo/CreateProfessorInfo.dto";
 import { UpdateProfessorInfoDTO } from "../dtos/professorInfo/UpdateProfessorInfo.dto";
 import mongoose from "mongoose";
+import { values } from "lodash";
 
 
 export const getProfessorInfo = async(req: express.Request, res: express.Response)=>{
@@ -43,6 +44,24 @@ export const createProfessorInfo = async(req: express.Request, res: express.Resp
         return res.status(200).json(createdInfo);
     } catch (error) {
         return res.status(500).json({error});       
+    }
+}
+
+export const createManyProfInfo = async(req: express.Request, res: express.Response) =>{
+    try {
+        const values: CreateProfessorInfoDTO[] = req.body;
+        if(!values || values.length === 0 ){
+            return res.status(400).json('Missing values');
+        }
+        const existingProfessors = await getUsersByRole('professor');
+        const existingIds = existingProfessors.map(professor => professor._id.toString());
+
+        const createdInfo = await createManyProfessorInfo(values.filter(value => existingIds.includes(value.userId.toString())));
+
+        return res.status(200).json(createdInfo);
+
+    } catch (error) {
+        return res.status(500).json({error});
     }
 }
 

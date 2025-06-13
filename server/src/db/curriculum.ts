@@ -9,13 +9,15 @@ const CurriculumSchema = new mongoose.Schema({
         groups:[{type: String, required: true}],    
         credits: {type: Number, required: true},
         schedule: {
-            day: {
+            weekday: {
                 type: String,
-                enum: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+                enum: ['MO', 'TU', 'WE', 'TH', 'FR'],
                 required: true
             },
-            startTime: {type: String, required: true},
-            endTime: {type: String, required: true},
+            startTime: {type: Date, required: true},
+            count: {type: Number, default: 15,required: false},
+            duration: {type: Number, default: 1.5, required: false},
+            interval: {type: Number, default: 1, required: false}
         }
     }]
 });

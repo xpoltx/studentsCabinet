@@ -25,7 +25,7 @@ export const EMAIL_VERIFY_TEMPLATE = `<!DOCTYPE html>
 </head>
 <body>
     <div class="container">
-        <p>Шановний recep 1,</p>
+        <p>Шановний користувач,</p>
         <p>Дякуємо за реєстрацію. Ось ваш код підтвердження:</p>
         <div class="code">
             {{ver_token}}

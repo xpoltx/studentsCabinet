@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useFetch from '../../hooks/useFetch'
-import { fetchStudentRecord, updateGrade } from '../../services/recordBookService' 
+import { fetchStudentRecord, updateGrade } from '../../services/recordBookService'
 
 import useMutation from '../../hooks/useMutation'
 import { Link } from 'react-router-dom'
@@ -52,36 +52,38 @@ const UpdateRecordTable = ({ disciplineId, studentId }) => {
     }
 
     return (
-        <div>
-            <h1>Виставити оцінку</h1>
+        <div className="max-w-xl mx-auto mt-10 bg-white rounded-lg shadow-lg p-8">
+            <h1 className="text-2xl font-bold mb-6 text-center">Виставити оцінку</h1>
             <form onSubmit={handleSumbit}>
-                <table>
+                <table className="w-full mb-4 border-separate border-spacing-y-2">
                     <tbody>
                         <tr>
-                            <td>Дисципліна:</td>
-                            <td>
-                                <Link to={`/discipline/${data?.disciplineId._id}`}>{data?.disciplineId.name || ''}</Link>
+                            <td className="w-1/2 border border-gray-300 px-4 py-2 font-bold text-gray-700">Дисципліна:</td>
+                            <td className="border border-gray-300 px-4 py-2 font-normal text-gray-700">
+                                <Link to={`/discipline/${data?.disciplineId._id}`}>
+                                    {data?.disciplineId.name || ''}
+                                </Link>
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                Студент:
-                            </td>
-                            <td>
-                                <Link to={`/info/student/${data?.studentId._id}`}>{data?.studentId.fullname || ''}</Link>
+                            <td className="border border-gray-300 px-4 py-2 font-bold text-gray-700">Студент:</td>
+                            <td className="border border-gray-300 px-4 py-2 font-normal text-gray-700">
+                                <Link to={`/info/student/${data?.studentId._id}`} >
+                                    {data?.studentId.fullname || ''}
+                                </Link>
                             </td>
                         </tr>
                         <tr>
+                            <td className="border border-gray-300 px-4 py-2 font-bold text-gray-700">Оцінка:</td>
                             <td>
-                                Оцінка:
-                            </td>
-                            <td>
-                                <input type="number"
+                                <input
+                                    type="number"
                                     min={0}
                                     max={100}
                                     name='grade'
                                     value={updatedGrade}
                                     onChange={(e) => setUpdatedGrade(Number(e.target.value))}
+                                    className="w-full px-4 py-2 border border-gray-300 focus:border-emerald-500 focus:outline-none"
                                 />
                             </td>
                         </tr>
@@ -96,7 +98,15 @@ const UpdateRecordTable = ({ disciplineId, studentId }) => {
                             {updLoading ? "Збереження" : "Зберегти зміни"}
 
                         </button>
+                        //                         <button
+                        //                             type='submit'
+                        //                             disabled={updLoading}
+                        //                             className='w-full py-2 px-4 font-bold rounded border-2 border-emerald-600 bg-emerald-500 text-white hover:bg-emerald-600 hover:border-emerald-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-emerald-300 disabled:opacity-60'
+                        //                         >
+                        //                             {updLoading ? "Збереження..." : "Зберегти зміни"}
+                        //                         </button>
                     ) : null}
+
                 </div>
             </form>
         </div>

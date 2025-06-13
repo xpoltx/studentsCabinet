@@ -13,3 +13,16 @@ export const fetchCurriculumData = async ({group}) => {
         throw new Error(error);
     }
 }
+
+
+export const fetchCurriculumDataExample = async () => {
+    try {
+        const curriculumRes = await axios(backendUrl + `/curriculum/68261c559c0f62e63bf046f8`, {withCredentials: true});
+        if(curriculumRes.status !== 200){
+            throw new Error('failed to fetch curriculum data');
+        }
+        return curriculumRes.data;
+    } catch (error) {
+        throw new Error(error);
+    }
+}

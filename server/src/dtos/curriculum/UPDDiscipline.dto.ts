@@ -5,8 +5,10 @@ export interface UPDDisciplineDTO{
     groups?: string[],
     credits?: number
     schedule?: {
-        day: 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri',
+        weekday: 'MO' | 'TU' | 'WE' | 'TH' | 'FR',
         startTime: string,
-        endTime: string
+        count: number,
+        duration: number,
+        interval: number
     }
 }

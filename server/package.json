@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --build",
     "start": "node ./build/index.js",
-    "start:dev": "nodemon ./src/index.ts"
+    "dev": "nodemon ./src/index.ts"
   },
   "author": "Poltoratskiy Serhii",
   "license": "ISC",

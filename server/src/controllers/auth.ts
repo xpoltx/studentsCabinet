@@ -1,6 +1,6 @@
 import express from "express";
 import { CreateUserDTO } from "../dtos/user/CreateUser.dto";
-import { createUser, getUserByConfirmToken, getUserByEmail, getUserBySessionToken, getUserByUUID, UserModel } from "../db/user";
+import { createManyUsers, createUser, findEmails, getUserByConfirmToken, getUserByEmail, getUserBySessionToken, getUserByUUID, UserModel } from "../db/user";
 import bcrypt from 'bcrypt'
 import { LoginUserDTO } from "../dtos/user/LoginUser.dto";
 import { AES } from "crypto-ts";
@@ -9,6 +9,7 @@ import dotenv from "dotenv"
 import { get } from "lodash";
 import generateQRcode from "../utils/genQRcode";
 import { sendConfirmMail } from "../utils/sendConfirmMail";
+import generateTokenAndSetCookie from "../utils/genJWT";
 
 dotenv.config()
 
@@ -36,6 +37,49 @@ export const registration = async (req: express.Request, res: express.Response) 
 
 };
 
+export const registerMany = async (req: express.Request, res: express.Response) => {
+    try {
+        const users: CreateUserDTO[] = req.body;
+        if (users.length === 0) {
+            return res.status(400).json({ error: 'No Users provided to register' });
+        }
+        const emails = users.map(user => user.email);
+        const existingUsers = await findEmails(emails)
+
+        const newUsers = users.filter(user => !existingUsers.includes(user.email));
+
+        if (newUsers.length === 0) {
+            return res.status(400).json({ error: 'All users already exist' });
+        }
+
+        const regUsers = await Promise.all(newUsers.map(async (user) => {
+            const encryptedPassword = (await bcrypt.hash(user.password, 10)).toString();
+            const confirmToken = genUUID();
+            return {
+                ...user,
+                password: encryptedPassword,
+                confirmToken,
+                profilePic: `https://avatar.iran.liara.run/public/boy?username=${user.fullname.replace(' ', '_')}`,
+            }
+        }));
+
+        const createdUsers = await createManyUsers(regUsers);
+
+        for (const user of regUsers) {
+            await sendConfirmMail(user.email, user.confirmToken);
+        }
+
+        return res.status(200).json({
+            skipped: existingUsers,
+            created: createdUsers
+        });
+
+
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
+}
+
 export const login = async (req: express.Request, res: express.Response) => {
     try {
         const values: LoginUserDTO = req.body;
@@ -51,12 +95,15 @@ export const login = async (req: express.Request, res: express.Response) => {
         existingUser.sessionToken = AES.encrypt(existingUser.fullname, process.env.SECRET_KEY!).toString();
         existingUser.uuid = genUUID();
         await existingUser.save();
-        res.cookie('User-auth', existingUser.sessionToken, {
-            path: '/',
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: false
-        });
+        // res.cookie('User-session', existingUser.sessionToken, {
+        //     path: '/',
+        //     httpOnly: true,
+        //     sameSite: 'lax',
+        //     secure: false
+        // });
+
+        generateTokenAndSetCookie(existingUser._id.toString(), res);
+
         const { password, ...userData } = existingUser.toObject();
         return res.status(200).json(userData);
     } catch (error) {
@@ -66,20 +113,24 @@ export const login = async (req: express.Request, res: express.Response) => {
 
 export const logout = async (req: express.Request, res: express.Response) => {
     try {
-        const sessionToken = req.cookies['User-auth'];
-        if (!sessionToken) {
-            return res.status(400).json({ error: "No active session found" });
-        }
+        // const sessionToken = req.cookies['User-session'];
+        // if (!sessionToken) {
+        //     return res.status(400).json({ error: "No active session found" });
+        // }
 
-        const user = await getUserBySessionToken(sessionToken);
-        if (!user) {
-            return res.status(400).json({ error: "Invalid session token" });
-        }
+        // const user = await getUserBySessionToken(sessionToken);
+        // if (!user) {
+        //     return res.status(400).json({ error: "Invalid session token" });
+        // }
 
-        user.sessionToken = undefined;
-        await user.save();
+        // user.sessionToken = undefined;
+        // await user.save();
 
-        res.clearCookie('User-auth', { path: '/' });
+        // res.clearCookie('User-session', { path: '/' });
+        // res.cookie('User-session', '', {maxAge: 0});
+
+        res.cookie('User-jwt', '', { maxAge: 0 });
+
         return res.status(200).json({ message: "Logout successful" });
     } catch (error) {
         return res.status(500).json({ error });

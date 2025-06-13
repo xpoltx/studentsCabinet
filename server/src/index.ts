@@ -1,5 +1,5 @@
 import express, { Request, Response }  from "express";
-
+import path from "path"
 import dotenv from "dotenv";
 import mongoose, { Error } from "mongoose";
 import cors from "cors";
@@ -13,14 +13,20 @@ dotenv.config();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: process.env.ORIGIN!,
     credentials: true
 }));
+
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+})
 
 
 app.use('/', router());
 
-mongoose.connect(process.env.DATABASE!).then(()=>{
+mongoose.connect(process.env.DATABASE!, {autoIndex: false}).then(()=>{
     console.log("Connected successfully");
 });
 mongoose.connection.on('error', (error: Error) => console.log(error));

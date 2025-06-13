@@ -1,9 +1,10 @@
 import { Router } from "express"
-import { crRecordBook, delRecordBook, delStudentRecordBook, getDebts, getDiscpRecBook, getRec, getStudentRecord, getStudentsRecords, updRecordBook, updStudentDisciplineRecord } from "../controllers/recordBook"
+import { createManyRecords, crRecord, delRecordBook, delStudentRecordBook, getDebts, getDiscpRecBook, getRec, getStudentRecord, getStudentsRecords, updRecordBook, updStudentDisciplineRecord } from "../controllers/recordBook"
 import { isAuthenticated, isProfessor } from "../middleware/userStatus"
 
 export default (router: Router) =>{
-    router.post('/record-book/create',isAuthenticated, isProfessor, crRecordBook),
+    router.post('/record-book/create',isAuthenticated, isProfessor, crRecord),
+    router.post('/record-book/create-many',isAuthenticated, isProfessor, createManyRecords),
     router.get('/record-book/:id',isAuthenticated, getRec),
     router.get('/record-book/student/:studentId',isAuthenticated, getStudentsRecords),
     router.get('/record-book/discipline/:disciplineId/student/:studentId',isAuthenticated, getStudentRecord),

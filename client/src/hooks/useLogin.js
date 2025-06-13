@@ -50,7 +50,7 @@ const useLogin = () => {
             setError(error);
 
         }finally{
-            loading(false);
+            setLoading(false);
         }
     }
     

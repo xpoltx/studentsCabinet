@@ -1,6 +1,6 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
-import UserHeader from '../../components/UserHeader';
+import UserHeader from '../../components/Common/UserHeader';
 import StudsDiscipTable from '../../components/ProfComp/StudsDiscipTable';
 
 

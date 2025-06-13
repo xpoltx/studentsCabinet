@@ -1,6 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import { createRecordBook, deleteRecordBook, deleteStudentsRecordBook, getDisciplinesRecordBook, getRecord, getStudentsDebts, getStudentsDisciplineRecord, getStudentsRecordBook, updateRecordBook, updateStudentDisciplineRecord, updateStudentRecordBook } from '../db/recordBook';
+import { createRecord, createRecords, deleteRecordBook, deleteStudentsRecordBook, getDisciplinesRecordBook, getRecord, getStudentsDebts, getStudentsDisciplineRecord, getStudentsRecordBook, updateRecordBook, updateStudentDisciplineRecord, updateStudentRecordBook } from '../db/recordBook';
 import { CreateRecordBookDTO } from '../dtos/recordBook/CreateRecordBook.dto';
 import { UpdateRecordBookDTO } from '../dtos/recordBook/UpdateRecordBook.dto';
 
@@ -62,10 +62,20 @@ export const getDebts = async(req: express.Request, res: express.Response)=>{
     }
 }
 
-export const crRecordBook = async(req:express.Request, res: express.Response) =>{
+export const crRecord = async(req:express.Request, res: express.Response) =>{
     try {
         const values: CreateRecordBookDTO = req.body;
-        const recordBook = await createRecordBook(values);
+        const recordBook = await createRecord(values);
+        return res.status(200).json(recordBook);
+    } catch (error) {
+        return res.status(500).json({error});        
+    }
+}
+
+export const createManyRecords = async(req:express.Request, res: express.Response) =>{
+    try {
+        const values: CreateRecordBookDTO[] = req.body;
+        const recordBook = await createRecords(values);
         return res.status(200).json(recordBook);
     } catch (error) {
         return res.status(500).json({error});        

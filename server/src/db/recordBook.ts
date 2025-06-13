@@ -20,7 +20,8 @@ export const getStudentsDebts = (studentId: mongoose.Types.ObjectId) => RecordBo
     debt: true
 });
 
-export const createRecordBook = (values: CreateRecordBookDTO) => new RecordBookModel(values).save().then(rb=> rb.toObject()).catch(err=>err.console.log());
+export const createRecord = (values: CreateRecordBookDTO) => new RecordBookModel(values).save().then(rb=> rb.toObject()).catch(err=>err.console.log());
+export const createRecords = (values: CreateRecordBookDTO[]) => RecordBookModel.insertMany(values).catch(err=>err.console.log());
 export const deleteRecordBook = (_id: mongoose.Types.ObjectId) => RecordBookModel.findByIdAndDelete(_id);
 export const updateRecordBook = (_id: mongoose.Types.ObjectId, values: UpdateRecordBookDTO) => RecordBookModel.findByIdAndUpdate({_id},values);
 export const updateStudentRecordBook = (studentId: mongoose.Types.ObjectId, values: UpdateRecordBookDTO) => RecordBookModel.findOneAndUpdate({studentId},values);

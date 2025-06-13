@@ -25,6 +25,9 @@ export const getUserBySessionToken = (sessionToken: string)=> UserModel.findOne(
 export const getUserByUUID = (uuid: string) => UserModel.findOne({uuid});
 export const getUserByConfirmToken = (confirmToken: string) => UserModel.findOne({confirmToken});
 
+export const findEmails = (emails: string[]) => UserModel.find({email: {$in: emails}}).select('email').then(users => users.map(user => user.email));
+
 export const createUser = (values: CreateUserDTO) => new UserModel(values).save().then((user)=>user.toObject()).catch(err => console.log(err));
+export const createManyUsers = (values: CreateUserDTO[]) => UserModel.insertMany(values).catch(err => console.log(err));
 export const updateUser = (email: string, values: UpdateUserDTO) => UserModel.findOneAndUpdate({email}, values, {new:true});
 export const deleteUser = (id: mongoose.Types.ObjectId) => UserModel.findByIdAndDelete({_id: id});
