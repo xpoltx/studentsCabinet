@@ -13,8 +13,8 @@ const generateTokenAndSetCookie = (userId: string, res: express.Response)=>{
     res.cookie("User-jwt", token, {
         maxAge: 15 * 24 * 60 * 60 * 1000,
         httpOnly: true,
-        sameSite: 'strict',
-        secure: process.env.NODE_ENV !== "development"
+        sameSite: 'none',
+        secure: true
     });
 
 };

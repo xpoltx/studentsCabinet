@@ -95,12 +95,6 @@ export const login = async (req: express.Request, res: express.Response) => {
         existingUser.sessionToken = AES.encrypt(existingUser.fullname, process.env.SECRET_KEY!).toString();
         existingUser.uuid = genUUID();
         await existingUser.save();
-        // res.cookie('User-session', existingUser.sessionToken, {
-        //     path: '/',
-        //     httpOnly: true,
-        //     sameSite: 'lax',
-        //     secure: false
-        // });
 
         generateTokenAndSetCookie(existingUser._id.toString(), res);
 
