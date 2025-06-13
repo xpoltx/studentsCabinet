@@ -1,5 +1,4 @@
 import express, { Request, Response }  from "express";
-import path from "path"
 import dotenv from "dotenv";
 import mongoose, { Error } from "mongoose";
 import cors from "cors";
@@ -16,13 +15,6 @@ app.use(cors({
     origin: process.env.ORIGIN!,
     credentials: true
 }));
-
-app.use(express.static(path.join(__dirname, '../client/dist')));
-
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
-})
-
 
 app.use('/', router());
 
