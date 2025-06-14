@@ -8,7 +8,27 @@ const DevSection = () => {
     const linkedin_url = import.meta.env.VITE_LINKEDIN_URL;
     const tg_url = import.meta.env.VITE_TG_URL;
     const mail_to = `mailto:${import.meta.env.VITE_MAIL}`;
-    
+
+    const buttons = [
+        {
+            href: linkedin_url,
+            alt: 'linkedin',
+            src: linkedin
+        },
+        {
+            href: tg_url,
+            alt: 'telegram',
+            src: telegram
+        },
+        {
+            href: mail_to,
+            alt: 'mail',
+            src: mail
+        }
+    ]
+
+
+
     return (
         <div className='flex flex-col items-center mb-40'>
             <div className='relative inset-x-0 top-0 text-center '>
@@ -22,9 +42,9 @@ const DevSection = () => {
                     <p className=' font-semibold text-xl '>Полторацький Сергій</p>
                     <p className=' font-light text-lg mb-3'>Менеджер проекту, розробник, тестувальник</p>
                     <div className='flex justify-center space-x-6'>
-                        <a href={linkedin_url} target='_blank' rel='noopener noreferrer' className='w-6 h-auto cursor-pointer' ><img src={linkedin} alt="linkedIn" /></a>
-                        <a href={tg_url} target='_blank' rel='noopener noreferrer' className='w-6 h-auto cursor-pointer'><img src={telegram} alt="telegram" /></a>
-                        <a href={mail_to} target='_blank' rel='noopener noreferrer' className='w-6 h-auto cursor-pointer'><img src={mail} alt="mail" /></a>
+                        {buttons.map(button => (
+                            <a key={button.alt} href={button.href} target='_blank' rel='noopener noreferrer' className='transform transition-transform duration-200 hover:scale-110'><img src={button.src} alt={button.alt} className='w-6 sm:w-6 h-auto cursor-pointer' /></a>
+                        ))}
                     </div>
                 </div>
             </div>

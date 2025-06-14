@@ -25,6 +25,7 @@ const CurriculumTable = ({ group }) => {
                     <select
                         value={selectedSemester || ''}
                         onChange={(e) => setSelectedSemester(Number(e.target.value))}
+                        className='focus:outline-none'
                     >
                         {data?.map((semester, semesterIndex) => (
                             <option

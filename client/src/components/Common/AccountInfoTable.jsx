@@ -1,6 +1,7 @@
 import React from 'react'
 import { groups, facultys, payments } from '../../services/constants/constants'
 import { Link } from 'react-router-dom';
+import TableComponent from './TableComponent';
 
 
 const AccountInfoTable = ({ role, accountData }) => {
@@ -58,42 +59,15 @@ const AccountInfoTable = ({ role, accountData }) => {
 
     return (
         <div className='p-5 bg-white rounded-lg shadow-md w-2/3 mx-auto'>
-            <h1 className='text-2xl font-bold mb-4 text-gray-800 text-center'>{accountData.userId.fullname}</h1>
+            <h1 className='text-2xl font-bold mb-4 text-gray-800 text-center'>{accountData.userId?.fullname}</h1>
             {role === 'student' ? (<>
                 <h1 className='text-2xl font-bold text-gray-800 text-center mb-4'>Інформація про студента</h1>
-                <table className='table-fixed w-full border-collapse border border-gray-300'>
-                    <tbody>
-                        {studentRows.map(row => (
-                            <tr key={row.label} className='bg-gray-100'>
-                                <td className='w-1/2 border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                    {row.label}
-                                </td>
-                                <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                    {row.value}
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <TableComponent rows={studentRows} />
             </>)
                 :
                 (<>
                     <h1 className='text-2xl font-bold text-center mb-4'>Інформація про викладача</h1>
-                    <table className='table-fixed w-full border-collapse border border-gray-300'>
-                        <tbody>
-                            {professorRows.map(row => (
-                            <tr key={row.label} className='bg-gray-100'>
-                                <td className='w-1/2 border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                    {row.label}
-                                </td>
-                                <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                    {row.value}
-                                </td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-
+                    <TableComponent rows={professorRows} />
                 </>)}
         </div>
     )

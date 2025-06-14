@@ -33,7 +33,7 @@ const UserHome = () => {
         <div className='flex justify-center items-center space-x-6 sm:space-x-8 mt-4'>
           {buttons.map(button => (
             <a key={button.alt} href={button.href} target='_blank' rel='noopener noreferrer' className='transform transition-transform duration-200 hover:scale-110'><img src={button.src} alt={button.alt} className='w-6 sm:w-6 h-auto cursor-pointer' /></a>
-          ))};
+          ))}
         </div>
       </div>
     </div>

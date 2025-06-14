@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useMutation from '../../hooks/useMutation';
-
+import TableComponent from '../Common/TableComponent'
 import { fetchDisciplineInfo, updateDiscipline } from '../../services/disciplinesService';
 import useFetch from '../../hooks/useFetch';
 
@@ -23,7 +23,7 @@ const UpdateDisciplineTableInfo = ({ id }) => {
     useEffect(() => {
         if (initData && updatedData) {
             setChanged(JSON.stringify(initData) !== JSON.stringify(updatedData));
-        } 
+        }
     }, [initData, updatedData]);
 
     if (!data) {
@@ -31,7 +31,7 @@ const UpdateDisciplineTableInfo = ({ id }) => {
     }
     const handleSumbit = async (e) => {
         e.preventDefault();
-        if(changed && initData){
+        if (changed && initData) {
             try {
                 const updatedDiscipline = await mutate({
                     disciplineId: initData._id,
@@ -45,64 +45,51 @@ const UpdateDisciplineTableInfo = ({ id }) => {
                 toast.error(error);
             }
         }
-        
+
     }
 
+    const updateDisciplineRows = [
+        {
+            label: 'Назва дисципліни:',
+            value: <input
+                type="text"
+                name='name'
+                value={updatedData?.name || ''}
+                onChange={(e) => setUpdatedData({ ...updatedData, name: e.target.value })}
+                className='w-full py-2 px-1 '
+            />
+        },
+        {
+            label: 'Курс:',
+            value: <input
+                type="number"
+                min={1}
+                max={6}
+                name='course'
+                value={updatedData?.course || ''}
+                onChange={(e) => setUpdatedData({ ...updatedData, course: e.target.value })}
+                className='w-full py-2 px-1 appearance-none'
+            />
+        },
+        {
+            label: 'Опис:',
+            value: <input
+                type="text"
+                name='desc'
+                value={updatedData?.desc || ''}
+                onChange={(e) => setUpdatedData({ ...updatedData, desc: e.target.value })}
+                className='w-full py-2 px-1 '
+            />
+        },
+    ]
 
 
     return (
         <div className='p-5 mt-10 bg-white rounded-lg shadow-md w-2/3 mx-auto cursor-default'>
             <h1 className='text-2xl font-bold mb-4 text-gray-800 text-center'> Оновити інформацію про дисципліну {data.name || ''}</h1>
             <form onSubmit={handleSumbit}>
-                <table className='table-fixed w-full border-collapse border border-gray-300'>
-                    <tbody>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Назва дисципліни:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                <input
-                                    type="text"
-                                    name='name'
-                                    value={updatedData?.name || ''}
-                                    onChange={(e) => setUpdatedData({ ...updatedData, name: e.target.value })}
-                                    className='w-full py-2 px-1 '
-                                />
-                            </td>
-                        </tr>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Курс:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                <input
-                                    type="number"
-                                    min={1}
-                                    max={6}
-                                    name='course'
-                                    value={updatedData?.course || ''}
-                                    onChange={(e) => setUpdatedData({ ...updatedData, course: e.target.value })}
-                                    className='w-full py-2 px-1 appearance-none'
-                                />
-                            </td>
-                        </tr>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Опис:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                <input
-                                    type="text"
-                                    name='desc'
-                                    value={updatedData?.desc || ''}
-                                    onChange={(e) => setUpdatedData({ ...updatedData, desc: e.target.value })}
-                                    className='w-full py-2 px-1 '
-                                />
-                            </td>
-                        </tr>
-
-                    </tbody>
-                </table>
+                <TableComponent rows={updateDisciplineRows}/>
+                
                 <div className='flex items-center justify-between mt-5'>
                     {changed ? (
                         <button
