@@ -9,8 +9,6 @@ const AccountInfoTable = ({ role, accountData }) => {
         return <div className='flex justify-center items-center h-screen'>Дані не завантажені</div>
     }
 
-    console.log(accountData)
-
     const groupField = role === 'student'
         ? (groups[accountData.group] || "Невідома група")
         : role === 'professor'

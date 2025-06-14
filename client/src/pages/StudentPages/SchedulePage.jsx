@@ -5,6 +5,7 @@ import { AppContent } from '../../context/AppContext'
 import useFetch from '../../hooks/useFetch'
 import { fetchAccountData } from '../../services/userDataService'
 import DataLoader from '../../components/Common/DataLoader'
+import ReturnButton from '../../components/Common/ReturnButton'
 
 const SchedulePage = () => {
   const { userRole, userId } = useContext(AppContent);
@@ -13,6 +14,7 @@ const SchedulePage = () => {
   return (
     <div>
       <UserHeader />
+      <ReturnButton />
       <h1 className='text-2xl font-bold mb-4 text-gray-800 text-center'>Розклад</h1>
       <div className='flex justify-center items-center'>
         <DataLoader loading={loading} error={error} data={data}>

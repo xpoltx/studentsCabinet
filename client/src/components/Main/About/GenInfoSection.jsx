@@ -1,5 +1,5 @@
 import React from 'react'
-import tempImg from '../../../assets/stub.jpg'
+import tempImg from '../../../assets/stub.png'
 
 function GenInfo() {
   return (

@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams } from 'react-router-dom'
 import UserHeader from '../../components/Common/UserHeader';
 import StudsDiscipTable from '../../components/ProfComp/StudsDiscipTable';
+import ReturnButton from '../../components/Common/ReturnButton';
 
 
 const StudentsDisciplinePage = () => {
@@ -10,6 +11,7 @@ const StudentsDisciplinePage = () => {
     return (
     <div>
         <UserHeader/>
+        <ReturnButton />
         <div className='flex justify-center items-center'>
             <StudsDiscipTable id={id} />
         </div>

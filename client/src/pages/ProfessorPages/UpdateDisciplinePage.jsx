@@ -5,6 +5,7 @@ import useFetch from '../../hooks/useFetch';
 import { fetchDisciplineInfo } from '../../services/disciplinesService';
 import UpdateDisciplineTableInfo from '../../components/ProfComp/UpdateDisciplineTableInfo';
 import DataLoader from '../../components/Common/DataLoader';
+import ReturnButton from '../../components/Common/ReturnButton';
 
 const UpdateDisciplinePage = () => {
     const { id } = useParams();
@@ -15,6 +16,7 @@ const UpdateDisciplinePage = () => {
             <div>
 
                 <UserHeader />
+                <ReturnButton />
                 <UpdateDisciplineTableInfo id={id} />
 
             </div>

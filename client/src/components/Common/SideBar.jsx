@@ -21,7 +21,6 @@ const SideBar = ({ userRole, isOpen, setIsOpen }) => {
                     onClick={() => setIsOpen(false)}
                 ></div>
             )}
-            <ReturnButton />
             
             <div className={`z-35 top-0 left-0 fixed bg-emerald-600/65 
                 transition-transform ease-in-out 
