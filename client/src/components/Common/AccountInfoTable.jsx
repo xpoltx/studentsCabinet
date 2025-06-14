@@ -18,6 +18,44 @@ const AccountInfoTable = ({ role, accountData }) => {
     const paymentField = payments[accountData.payment] || "Невідома форма оплати";
 
 
+    const studentRows = [
+        {
+            label: 'Роль:',
+            value: role ? 'Студент' : 'Невизначена'
+        },
+        {
+            label: 'Курс:',
+            value: accountData.course
+        },
+        {
+            label: 'Група:',
+            value: <Link to={`/group/${accountData.group}`}>{groupField}</Link>
+        },
+        {
+            label: 'Факультет:',
+            value: <Link to={`/faculty/${accountData.faculty}`}>{facultyField}</Link>
+        },
+        {
+            label: 'Оплата:',
+            value: paymentField
+        },
+    ]
+
+    const professorRows = [
+        {
+            label: 'Роль:',
+            value: role
+        },
+        {
+            label: 'Куратор:',
+            value: accountData.curator ? 'Так' : 'Ні'
+        },
+        {
+            label: 'Група:',
+            value: <Link to={`/group/${accountData.curatedGroup}`}>{groupField}</Link>
+        }
+    ]
+
     return (
         <div className='p-5 bg-white rounded-lg shadow-md w-2/3 mx-auto'>
             <h1 className='text-2xl font-bold mb-4 text-gray-800 text-center'>{accountData.userId.fullname}</h1>
@@ -25,46 +63,16 @@ const AccountInfoTable = ({ role, accountData }) => {
                 <h1 className='text-2xl font-bold text-gray-800 text-center mb-4'>Інформація про студента</h1>
                 <table className='table-fixed w-full border-collapse border border-gray-300'>
                     <tbody>
-                        <tr className='bg-gray-100'>
-                            <td className='w-1/2 border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Роль:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                {role ? 'Студент' : 'Невизначена'}
-                            </td>
-                        </tr>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Курс:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                {accountData.course}
-                            </td>
-                        </tr>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Група:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                <Link to={`/group/${accountData.group}`}>{groupField}</Link>
-                            </td>
-                        </tr>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Факультет:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                <Link to={`/faculty/${accountData.faculty}`}>{facultyField}</Link>
-                            </td>
-                        </tr>
-                        <tr className='bg-gray-100'>
-                            <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
-                                Оплата:
-                            </td>
-                            <td className='border border-gray-300 px-4 py-2 text-gray-600'>
-                                {paymentField}
-                            </td>
-                        </tr>
+                        {studentRows.map(row => (
+                            <tr key={row.label} className='bg-gray-100'>
+                                <td className='w-1/2 border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
+                                    {row.label}
+                                </td>
+                                <td className='border border-gray-300 px-4 py-2 text-gray-600'>
+                                    {row.value}
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </>)
@@ -73,18 +81,16 @@ const AccountInfoTable = ({ role, accountData }) => {
                     <h1 className='text-2xl font-bold text-center mb-4'>Інформація про викладача</h1>
                     <table className='table-fixed w-full border-collapse border border-gray-300'>
                         <tbody>
-                            <tr className='bg-gray-100 cursor-default'>
-                                <td className='border w-1/2 border-gray-300 px-4 py-2 font-semibold text-gray-700'>Роль:</td>
-                                <td className='border border-gray-300 px-4 py-2 text-gray-600'>{role}</td>
+                            {professorRows.map(row => (
+                            <tr key={row.label} className='bg-gray-100'>
+                                <td className='w-1/2 border border-gray-300 px-4 py-2 font-semibold text-gray-700'>
+                                    {row.label}
+                                </td>
+                                <td className='border border-gray-300 px-4 py-2 text-gray-600'>
+                                    {row.value}
+                                </td>
                             </tr>
-                            <tr className='bg-gray-100 cursor-default'>
-                                <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>Куратор:</td>
-                                <td className='border border-gray-300 px-4 py-2 text-gray-600'>{accountData.curator ? 'Так' : 'Ні'}</td>
-                            </tr>
-                            <tr className='bg-gray-100 cursor-pointer'>
-                                <td className='border border-gray-300 px-4 py-2 font-semibold text-gray-700'>Куруєма група:</td>
-                                <td className='border border-gray-300 px-4 py-2 text-gray-600'><Link to={`/group/${accountData.curatedGroup}`}>{groupField}</Link></td>
-                            </tr>
+                        ))}
                         </tbody>
                     </table>
 
