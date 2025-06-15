@@ -5,7 +5,7 @@ export interface DisciplineDTO{
     groups: string[],
     credits: number,
     schedule: {
-        weekday: 'MO' | 'TU' | 'WE' | 'TH' | 'FR',
+        weekday: Array<'MO' | 'TU' | 'WE' | 'TH' | 'FR'>,
         startTime: string,
         count?: number,
         duration?: number,

@@ -10,7 +10,7 @@ const CurriculumSchema = new mongoose.Schema({
         credits: {type: Number, required: true},
         schedule: {
             weekday: {
-                type: String,
+                type: [String],
                 enum: ['MO', 'TU', 'WE', 'TH', 'FR'],
                 required: true
             },

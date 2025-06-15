@@ -32,16 +32,27 @@ const ScheduleTable = ({ group }) => {
     showMore: (total) => `+ (${total}) Подій`,
   }
 
-  const getRRuleWeekday = (weekDays) => {
-    switch (weekDays) {
-      case 'MO': return RRule.MO;
-      case 'TU': return RRule.TU;
-      case 'WE': return RRule.WE;
-      case 'TH': return RRule.TH;
-      case 'FR': return RRule.FR;
-      default: return RRule.MO;
-    }
-  }
+  // const getRRuleWeekday = (weekDays) => {
+  //   switch (weekDays) {
+  //     case 'MO': return RRule.MO;
+  //     case 'TU': return RRule.TU;
+  //     case 'WE': return RRule.WE;
+  //     case 'TH': return RRule.TH;
+  //     case 'FR': return RRule.FR;
+  //     default: return RRule.MO;
+  //   }
+  // }
+  const getRRuleWeekday = (day) => {
+    const map = {
+      MO: RRule.MO,
+      TU: RRule.TU,
+      WE: RRule.WE,
+      TH: RRule.TH,
+      FR: RRule.FR,
+    };
+    return map[day] || RRule.MO;
+  };
+
 
   const events = [];
 
@@ -54,7 +65,7 @@ const ScheduleTable = ({ group }) => {
       const startDate = new Date(startTime);
       const rule = new RRule({
         freq: RRule.WEEKLY,
-        byweekday: [getRRuleWeekday(weekday)],
+        byweekday: weekday.map(getRRuleWeekday),
         count: count,
         interval: interval,
         dtstart: startDate,
@@ -80,11 +91,11 @@ const ScheduleTable = ({ group }) => {
       backgroundColor: '#6b46c1',
       color: 'white',
       fontSize: '0.85rem',
-      fontWeight: '600', 
+      fontWeight: '600',
       padding: '2px 4px',
       cursor: 'pointer',
       textAlign: 'center',
-      display: 'block', 
+      display: 'block',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
       whiteSpace: 'nowrap',
