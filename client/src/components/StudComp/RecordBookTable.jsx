@@ -10,7 +10,7 @@ const RecordBookTable = ({ studentId }) => {
 
     return (
         <DataLoader loading={loading} error={error} data={data}>
-            <div className='p-5 mt-10 bg-white rounded-lg shadow-md w-2/3 mx-auto'>
+            <div className='p-5 bg-white rounded-lg shadow-md w-2/3 mx-auto'>
                 <h1 className='text-2xl font-bold mb-4 text-gray-800 text-center'>Залікова книжка</h1>
                 <table className='table-auto w-full border-collapse border border-gray-300'>
                     <thead>
