@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import useFetch from '../../hooks/useFetch';
 import { fetchGroup } from '../../services/studentsService';
 import DataLoader from './DataLoader';
+import { groups } from '../../services/constants/constants';
 
 
 const GroupTable = ({ groupName }) => {
@@ -13,7 +14,7 @@ const GroupTable = ({ groupName }) => {
     <DataLoader loading={loading} error={error} data={data}>
       <div className='p-4 sm:p-6 lg:p-8 mt-8 sm:mt-10 md:mt-12 bg-white rounded-lg shadow-md w-full max-w-lg mx-auto'>
         <h2 className='text-2xl sm:text-3xl font-bold mb-3 text-gray-800 text-center cursor-default'>
-          Група: <span className='font-semibold '>{groupName}</span>
+          Група: <span className='font-semibold '>{groups[groupName] || 'Невідома група'}</span>
         </h2>
         <h2 className='text-lg sm:text-xl font-bold mb-4 text-gray-800 text-center cursor-default'>
           Куратор: {' '}  
